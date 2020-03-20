@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Zero-One Banking
+  license:
+    name: UNLICENSED
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  /v1/bank/accounts:
+    get:
+      summary: List all bank accounts
+      tags:
+        - banking
+      responses:
+        '200':
+          description: An array of Bank Accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bankAccounts'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a bank account
+      tags:
+        - banking
+      requestBody:
+        description: The Account information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bankAccount'
+        required: true
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/v1/bank/accounts/{account}/transactions':
+    summary: List all transactions of an account
+    parameters:
+      - name: account
+        in: path
+        required: true
+        description: Account Id
+        schema:
+          type: string
+    get:
+      summary: ''
+      description: ''
+      tags:
+        - transactions
+      responses:
+        '200':
+          description: An array of Bank Accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bankTransactions'
+        default:
+          description: Default error sample response
+    post:
+      summary: Create a transaction for the specified Account
+      description: ''
+      tags:
+        - transactions
+      requestBody:
+        description: The transaction data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bankTransaction'
+      operationId: ''
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: Default error sample response
+components:
+  schemas:
+    bankAccount:
+      required:
+        - bank
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        bank:
+          type: string
+          enum:
+            - Fleeca Bank
+            - Zero One Bank
+            - Pacific Standard Public Deposit Bank
+            - Blaine County Savings Bank
+            - Union Depository
+        iban:
+          type: string
+        balance:
+          type: string
+        sub:
+          type: string
+          format: uuid
+    bankTransaction:
+      required:
+        - destination
+        - amount
+      properties:
+        id:
+          type: string
+          format: uuid
+        source:
+          type: string
+        destination:
+          type: string
+        amount:
+          type: number
+          format: float
+          minimum: 1
+    bankTransactions:
+      type: array
+      items:
+        $ref: '#/components/schemas/bankTransaction'
+    bankAccounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/bankAccount'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
