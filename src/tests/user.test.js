@@ -40,7 +40,7 @@ describe('/v1/auth', () => {
         .expect(400);
     });
 
-    it('user can with correct', async () => {
+    it('user can login with correct password', async () => {
       const res = await request
         .post('/v1/auth/login')
         .send({

@@ -18,6 +18,7 @@ const config = {
     database: env.DB_DATABASE,
     logging: false,
   },
+  jwtSecret: env.JWT_SECRET,
   env: env.NODE_ENV,
   web: {
     port: env.WEB_PORT,

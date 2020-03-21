@@ -3,6 +3,7 @@ import Boom from '@hapi/boom';
 import bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import User from '../models/User';
+import config from '../config';
 
 const authRouter = new Router({ prefix: '/auth' });
 
@@ -33,8 +34,7 @@ authRouter.post('/register', async (ctx, next) => {
 authRouter.post('/login', async (ctx, next) => {
   const { body } = ctx.request;
   const dbUser = await User.findOne({ username: body.username });
-  const isCorrect = comparePass(body.password, dbUser.password);
-  if (!isCorrect) {
+  if (!comparePass(body.password, dbUser.password)) {
     return ctx.throw(Boom.badRequest('Invalid Username or Password!'));
   }
   // TODO: this need to be configurable
@@ -44,7 +44,9 @@ authRouter.post('/login', async (ctx, next) => {
     isTeacher: dbUser.isTeacher,
     email: dbUser.email,
     id: dbUser.id,
-  }, 'TEST', {
+  },
+  config.jwtSecret,
+  {
     expiresIn: '14d',
   });
   ctx.body = {

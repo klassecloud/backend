@@ -5,9 +5,9 @@ import Boom from '@hapi/boom';
 import * as fetch from 'node-fetch';
 import * as jwt from 'jsonwebtoken';
 import authRouter from './auth';
+import config from '../config';
 
 const router = new Router({ prefix: '/v1' });
-let cert;
 
 // router.use(oas({
 //   file: `${__dirname}/../config/openapi.yaml`,
@@ -25,36 +25,23 @@ let cert;
 //   },
 // }));
 
-// router.use(async (ctx, next) => {
-//   // if (!ctx.headers.authorization) {
-//   //   return ctx.throw(Boom.unauthorized());
-//   // }
-//   // const token = ctx.headers.authorization.substring('Bearer '.length);
-//   // if (!token) {
-//   //   return ctx.throw(Boom.unauthorized());
-//   // }
-//   // if (!cert) {
-//   //   const req = await fetch('https://identity.01.helm-notifier.com/realms/master');
-//   //   if (req.status !== 200) {
-//   //     return ctx.throw(Boom.unauthorized());
-//   //   }
-//   //   const config = await req.json();
-//   //   cert = `-----BEGIN PUBLIC KEY-----\n${config.public_key}\n-----END PUBLIC KEY-----`;
-//   // }
-//   // const algorithms = ['RS256'];
-//   // if (process.env.NODE_ENV === 'test') {
-//   //   algorithms.push('HS256');
-//   //   cert = 'test';
-//   // }
+router.use(async (ctx, next) => {
+  if (ctx.headers.authorization) {
+    const token = ctx.headers.authorization.substring('Bearer '.length);
+    if (!token) {
+      return ctx.throw(Boom.unauthorized());
+    }
 
-//   // try {
-//   //   ctx.user = jwt.verify(token, cert, { algorithms });
-//   // } catch (e) {
-//   //   return ctx.throw(Boom.unauthorized());
-//   // }
-//   // return next();
-// });
+    const algorithms = ['HS256'];
 
+    try {
+      ctx.user = jwt.verify(token, config.jwtSecret, { algorithms });
+    } catch (e) {
+      return ctx.throw(Boom.unauthorized());
+    }
+  }
+  return next();
+});
 
 router.use(authRouter.routes());
 

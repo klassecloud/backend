@@ -1,9 +1,9 @@
 import {
-  Entity, BeforeInsert, BeforeUpdate, BaseEntity, PrimaryGeneratedColumn, Column,
+  Entity, BeforeInsert, BeforeUpdate, AfterLoad, BaseEntity, PrimaryGeneratedColumn, Column,
 } from 'typeorm';
 import isSANB from 'is-string-and-not-blank';
 import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcryptjs'// const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';// const bcrypt = require('bcryptjs');
 
 import faker from 'faker';
 
@@ -30,11 +30,18 @@ export default class User extends BaseEntity {
   @Column('varchar')
   password = undefined;
 
+  @AfterLoad()
+  loadTempPassword() {
+    this.tempPassword = this.password;
+  }
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
-    const salt = bcrypt.genSaltSync();
-    const password = bcrypt.hashSync(this.password, salt);
-    this.password = password;
+    if (this.tempPassword !== this.password) {
+      const salt = bcrypt.genSaltSync();
+      const password = bcrypt.hashSync(this.password, salt);
+      this.password = password;
+    }
   }
 }
