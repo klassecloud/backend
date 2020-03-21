@@ -1,11 +1,12 @@
-# Example how to use [TypeORM](https://github.com/typeorm/typeorm) with JavaScript + Babel
+Where to get infos
+https://koajs.com/
+https://github.com/koajs/router
+https://typeorm.io/#/
+https://jwt.io/
 
-1. clone repository
-2. run `npm i`
-3. run `npm start`
-4. enjoy!
+How to start?
 
-## How to use CLI?
-
-1. install `typeorm` globally: `npm i -g typeorm`
-2. run `typeorm -h` to show list of available commands
+`docker-compose up -d db`
+`npm run test`
+or 
+`npm run dev`

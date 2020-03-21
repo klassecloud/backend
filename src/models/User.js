@@ -1,11 +1,9 @@
 import {
   Entity, BeforeInsert, BeforeUpdate, AfterLoad, BaseEntity, PrimaryGeneratedColumn, Column,
 } from 'typeorm';
-import isSANB from 'is-string-and-not-blank';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';// const bcrypt = require('bcryptjs');
 
-import faker from 'faker';
 
 @Entity()
 export default class User extends BaseEntity {
