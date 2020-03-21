@@ -23,7 +23,7 @@ export default class User extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   email = undefined;
 
@@ -36,6 +36,5 @@ export default class User extends BaseEntity {
     const salt = bcrypt.genSaltSync();
     const password = bcrypt.hashSync(this.password, salt);
     this.password = password;
-    // this.setDataValue('password', password);
   }
 }
