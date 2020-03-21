@@ -5,6 +5,7 @@ import Boom from '@hapi/boom';
 import * as fetch from 'node-fetch';
 import * as jwt from 'jsonwebtoken';
 import authRouter from './auth';
+import classroomRouter from './classroom';
 import config from '../config';
 
 const router = new Router({ prefix: '/v1' });
@@ -44,5 +45,6 @@ router.use(async (ctx, next) => {
 });
 
 router.use(authRouter.routes());
+router.use(classroomRouter.routes());
 
 export default router;

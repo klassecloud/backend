@@ -1,7 +1,9 @@
 import User from './User';
+import Classroom from './Classroom';
 
 const models = {
-  User
+  User,
+  Classroom,
 };
 
 export { models };
