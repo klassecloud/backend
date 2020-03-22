@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
-import { Post } from './models/Post';
-import { Category } from './models/Category';
+import  Post  from './models/Post';
+import  Category  from './models/Category';
 
 // connection settings are in the "ormconfig.json" file
 createConnection({

@@ -6,16 +6,14 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany, JoinTable,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
-import Classroom from './Classroom';
 // const bcrypt = require('bcryptjs');
 
 
 @Entity()
-export default class User extends BaseEntity {
+export default class Teacher extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id = uuidv4();
 
@@ -25,6 +23,9 @@ export default class User extends BaseEntity {
   @Column('varchar')
   nickname = undefined;
 
+  @Column('bool')
+  isValidated = false;
+
   @Column({
     type: 'varchar',
     nullable: true,
@@ -33,9 +34,6 @@ export default class User extends BaseEntity {
 
   @Column('varchar')
   password = undefined;
-
-  @ManyToMany(type => Classroom, classroom => classroom.users)
-  classrooms = undefined;
 
   @AfterLoad()
   loadTempPassword() {
