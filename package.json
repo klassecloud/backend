@@ -14,15 +14,15 @@
     "lint": "eslint --fix src"
   },
   "author": {
-    "name": "Zero One",
-    "email": "dev@zero-one.cc"
+    "name": "KlasseCloud",
+    "email": "klasse.cloud.wirvshack@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Zero-One-Gaming/api.git"
+    "url": "https://github.com/klassecloud/backend.git"
   },
   "bugs": {
-    "url": "https://github.com/Zero-One-Gaming/api/issues"
+    "url": "https://github.com/klassecloud/backend/issues"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
