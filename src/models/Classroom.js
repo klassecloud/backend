@@ -1,9 +1,8 @@
 import {
-  Entity, BaseEntity, ManyToMany, JoinTable, PrimaryGeneratedColumn, Column,
+  Entity, BaseEntity, ManyToMany, JoinTable, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import User from './User';
-import Teacher from './Teacher';
 
 @Entity()
 export default class Classroom extends BaseEntity {
@@ -13,9 +12,8 @@ export default class Classroom extends BaseEntity {
   @Column('varchar')
   topic = undefined;
 
-  @ManyToMany(type => Teacher, { cascade: true })
-  @JoinTable()
-  teachers = undefined;
+  @Column('varchar')
+  teacherId = undefined;
 
   @ManyToMany(type => User, user => user.classrooms)
   @JoinTable()

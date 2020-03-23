@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import User from '../models/User';
 import config from '../config';
-import Teacher from '../models/Teacher';
 
 const authRouter = new Router({ prefix: '/auth' });
 
@@ -27,27 +26,12 @@ authRouter.post('/register', async (ctx, next) => {
   account.password = body.password;
   account.nickname = body.nickname;
   account.username = body.username;
+  account.isTeacher = false;
   await account.save();
-  ctx.status = 201;
-  return next();
-});
-
-authRouter.post('/register/teacher', async (ctx, next) => {
-  const { body } = ctx.request;
-  if (body.password === undefined) {
-    return ctx.throw(Boom.badRequest('password is required'));
-  }
-  if (body.nickname === undefined) {
-    return ctx.throw(Boom.badRequest('nickname is required'));
-  }
-  if (body.username === undefined) {
-    return ctx.throw(Boom.badRequest('username is required'));
-  }
-  const account = new Teacher();
-  account.password = body.password;
-  account.nickname = body.nickname;
-  account.username = body.username;
-  await account.save();
+  ctx.body = {
+    username: account.username,
+    state: "Created"
+  };
   ctx.status = 201;
   return next();
 });
@@ -56,6 +40,9 @@ authRouter.post('/register/teacher', async (ctx, next) => {
 authRouter.post('/login', async (ctx, next) => {
   const { body } = ctx.request;
   const dbUser = await User.findOne({ username: body.username });
+  if (dbUser === undefined || dbUser === false) {
+    return ctx.throw(Boom.badRequest('Invalid Username or Password!'));
+  }
   if (!comparePass(body.password, dbUser.password)) {
     return ctx.throw(Boom.badRequest('Invalid Username or Password!'));
   }
@@ -72,7 +59,10 @@ authRouter.post('/login', async (ctx, next) => {
     expiresIn: '14d',
   });
   ctx.body = {
-    success: true,
+    id: dbUser.id,
+    userName: dbUser.username,
+    displayName: dbUser.nickname,
+    email: dbUser.email,
     token,
   };
   return next();

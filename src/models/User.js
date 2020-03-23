@@ -34,6 +34,9 @@ export default class User extends BaseEntity {
   @Column('varchar')
   password = undefined;
 
+  @Column('boolean')
+  isTeacher = undefined;
+
   @ManyToMany(type => Classroom, classroom => classroom.users)
   classrooms = undefined;
 

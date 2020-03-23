@@ -2,7 +2,8 @@ import Router from '@koa/router';
 import Boom from '@hapi/boom';
 import Classroom from '../models/Classroom';
 import User from '../models/User';
-import Teacher from '../models/Teacher';
+import * as jwt from 'jsonwebtoken';
+import config from '../config';
 
 const classroomRouter = new Router({ prefix: '/classroom' });
 
@@ -13,11 +14,11 @@ classroomRouter.post('/', async (ctx, next) => {
     return ctx.throw(Boom.badRequest('You need to define a topic'));
   }
   const room = new Classroom();
-  const teacher = await Teacher.findOne({id: body.user.id});
-  if (!teacher.isValidated) {
+  const user = await User.findOne({id: body.user.id});
+  if (!user.isTeacher) {
     return ctx.throw(Boom.unauthorized('You need to be a validated'));
   }
-  room.teachers = [teacher];
+  room.teacherId = user.id;
   room.topic = body.topic;
   await room.save();
   ctx.status = 201;
@@ -29,7 +30,7 @@ classroomRouter.post('/join', async (ctx, next) => {
   if (body.user.id === undefined || body.classroom.id === undefined) {
     return ctx.throw(Boom.badRequest('You need to define a userId and a classromId'));
   }
-  const classroom = await Classroom.findOne({id: body.classroom.id}, {relations:  ['teachers','users']});
+  const classroom = await Classroom.findOne({id: body.classroom.id}, {relations:  ['users']});
   if (classroom === false) {
     return ctx.throw(Boom.badRequest('The classroom you want to join is not existing'));
   }
@@ -37,6 +38,7 @@ classroomRouter.post('/join', async (ctx, next) => {
   if (user === false) {
     return ctx.throw(Boom.badRequest('The given userid is not existing'));
   }
+  console.log(classroom);
   classroom.users.push(user);
   await classroom.save();
   ctx.status = 202;
@@ -56,5 +58,6 @@ classroomRouter.get('/get/byUserId', async (ctx, next) => {
   ctx.body = user.classrooms;
   return next();
 });
+
 
 export default classroomRouter;
