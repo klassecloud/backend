@@ -60,8 +60,8 @@ authRouter.post('/login', async (ctx, next) => {
   });
   ctx.body = {
     id: dbUser.id,
-    userName: dbUser.username,
-    displayName: dbUser.nickname,
+    username: dbUser.username,
+    nickname: dbUser.nickname,
     email: dbUser.email,
     token,
   };
