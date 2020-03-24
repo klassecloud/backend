@@ -2,11 +2,11 @@ import Router from '@koa/router';
 import Boom from '@hapi/boom';
 import Classroom from '../models/Classroom';
 import User from '../models/User';
-import * as jwt from 'jsonwebtoken';
-import config from '../config';
+
 
 const classroomRouter = new Router({ prefix: '/classroom' });
 
+classroomRouter.use()
 
 classroomRouter.post('/', async (ctx, next) => {
   const { body } = ctx.request;
