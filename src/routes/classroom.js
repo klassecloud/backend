@@ -14,7 +14,7 @@ classroomRouter.post('/', async (ctx, next) => {
     return ctx.throw(Boom.badRequest('You need to define a topic'));
   }
   const room = new Classroom();
-  const user = await User.findOne({id: body.user.id});
+  const user = await User.findOne({id: ctx.user.id});
   if (!user.isTeacher) {
     return ctx.throw(Boom.unauthorized('You need to be a validated'));
   }
@@ -46,12 +46,11 @@ classroomRouter.post('/join', async (ctx, next) => {
 });
 
 classroomRouter.get('/get/byUserId', async (ctx, next) => {
-  const {body} = ctx.request;
-  if (body.user.id === undefined) {
+  if (ctx.user.id === undefined) {
     return ctx.throw(Boom.badRequest('You need to define a userId'));
   }
-  const user = await User.findOne({id: body.user.id}, {relations: ['classrooms']});
-  if (user === false){
+  const user = await User.findOne({id: ctx.user.id}, {relations: ['classrooms']});
+  if (user === undefined){
     return ctx.throw(Boom.badRequest('The given userid is not existing'));
   }
   ctx.status = 200;

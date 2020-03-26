@@ -6,7 +6,7 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany, JoinTable,
+  ManyToMany, JoinTable, Unique,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
@@ -20,6 +20,7 @@ export default class User extends BaseEntity {
   id = uuidv4();
 
   @Column('varchar')
+  @Unique()
   username = undefined;
 
   @Column('varchar')
