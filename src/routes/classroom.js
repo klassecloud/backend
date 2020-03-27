@@ -28,7 +28,7 @@ classroomRouter.post('/', async (ctx, next) => {
 classroomRouter.post('/join', async (ctx, next) => {
   const {body} = ctx.request;
   if (body.user.id === undefined || body.classroom.id === undefined) {
-    return ctx.throw(Boom.badRequest('You need to define a userId and a classromId'));
+    return ctx.throw(Boom.badRequest('You need to define a userId and a classroomId'));
   }
   const classroom = await Classroom.findOne({id: body.classroom.id}, {relations:  ['users']});
   if (classroom === false) {
