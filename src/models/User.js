@@ -6,7 +6,7 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany, JoinTable, Unique, ManyToOne, OneToMany,
+  ManyToMany, JoinTable, Unique, ManyToOne, OneToMany, JoinColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
@@ -31,7 +31,14 @@ export default class User extends BaseEntity {
   @Column('varchar')
   password = undefined;
 
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  classroomId = undefined;
+
   @ManyToOne(type => Classroom, classroom => classroom.users)
+  @JoinColumn({name: 'classroomId'})
   classroom = undefined;
 
   @ManyToMany(type => Conversation, conversation => conversation.users)

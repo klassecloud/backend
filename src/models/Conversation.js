@@ -1,6 +1,6 @@
 import {
-  BaseEntity,
-  Entity, JoinTable,
+  BaseEntity, Column,
+  Entity, JoinColumn, JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -17,7 +17,14 @@ export default class Conversation extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id = uuidv4();
 
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  teacherId = undefined;
+
   @ManyToOne(type => Teacher, teacher => teacher.conversations)
+  @JoinColumn({name: 'teacherId'})
   teacher = undefined;
 
   @OneToMany(type => Message, message => message.conversation)

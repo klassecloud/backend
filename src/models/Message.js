@@ -2,7 +2,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -23,7 +23,11 @@ export default class Message extends BaseEntity{
   @Column('varchar')
   sender = undefined;
 
+  @Column('varchar')
+  conversationId = undefined;
+
   @ManyToOne(type => Conversation, conversation => conversation.messages)
+  @JoinColumn({name: 'conversationId'})
   conversation = undefined;
 
 

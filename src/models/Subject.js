@@ -20,6 +20,9 @@ export default class Subject extends BaseEntity{
   @Column('varchar')
   name= undefined;
 
+  @Column('varchar')
+  classroomId = undefined;
+
   @Column({
     type: 'varchar',
     nullable: true
@@ -27,6 +30,7 @@ export default class Subject extends BaseEntity{
   description = undefined;
 
   @ManyToOne(type => Classroom, classroom => classroom.subjects)
+  @JoinColumn({name: 'classroomId'})
   classroom = undefined;
 
   @OneToOne(type => Conversation)

@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import File from './File';
 import User from './User';
@@ -19,9 +27,13 @@ export default class Result extends BaseEntity{
   comment = undefined;
 
   @Column('varchar')
+  taskId = undefined;
+
+  @Column('varchar')
   state = undefined;
 
   @ManyToOne(type => Task, task => task.results)
+  @JoinColumn({name: 'taskId'})
   task = undefined;
 
   @OneToMany(type => File, file => file.result)

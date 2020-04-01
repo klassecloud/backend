@@ -1,7 +1,7 @@
 import {
   BaseEntity,
   Column,
-  Entity,
+  Entity, JoinColumn,
   JoinTable,
   ManyToMany, ManyToOne,
   OneToMany,
@@ -38,6 +38,9 @@ export default class Task extends BaseEntity{
   })
   startDate = undefined;
 
+  @Column('varchar')
+  subjectId = undefined;
+
   @ManyToMany(type => File, file => file.tasks)
   @JoinTable()
   files = undefined;
@@ -46,6 +49,7 @@ export default class Task extends BaseEntity{
   results = undefined;
 
   @ManyToOne(type => Subject, subject => subject.tasks)
+  @JoinColumn({ name: 'subjectId' })
   subject = undefined;
 
 }

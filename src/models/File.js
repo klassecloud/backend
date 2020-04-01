@@ -1,5 +1,13 @@
 
-import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import Task from './Task';
 import Result from './Result';
@@ -24,9 +32,16 @@ export default class File extends BaseEntity{
   @Column('varchar')
   mimetype = undefined
 
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  resultId = undefined;
+
   @ManyToMany(type => Task, task => task.files)
   tasks = undefined;
 
   @ManyToOne(type => Result, result => result.files)
+  @JoinColumn({name: 'resultId'})
   result = undefined;
 }
