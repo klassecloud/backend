@@ -1,5 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import Conversation from './Conversation';
 
 @Entity()
 export default class Message extends BaseEntity{
@@ -9,8 +17,14 @@ export default class Message extends BaseEntity{
   @Column('varchar')
   content = undefined;
 
-  @Column('timestamp')
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   timestamp = undefined;
+
+  @Column('varchar')
+  sender = undefined;
+
+  @ManyToOne(type => Conversation, conversation => conversation.messages)
+  conversation = undefined;
 
 
 }

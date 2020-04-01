@@ -32,6 +32,7 @@ export default class Teacher extends BaseEntity{
   password = undefined;
 
   @Column('varchar')
+  @Unique
   email = undefined;
 
   @Column('boolean')

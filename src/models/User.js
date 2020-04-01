@@ -6,11 +6,13 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany, JoinTable, Unique, ManyToOne,
+  ManyToMany, JoinTable, Unique, ManyToOne, OneToMany,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 import Classroom from './Classroom';
+import Conversation from './Conversation';
+import Result from './Result';
 // const bcrypt = require('bcryptjs');
 
 
@@ -31,6 +33,12 @@ export default class User extends BaseEntity {
 
   @ManyToOne(type => Classroom, classroom => classroom.users)
   classroom = undefined;
+
+  @ManyToMany(type => Conversation, conversation => conversation.users)
+  conversations = undefined;
+
+  @OneToMany(type => Result, result => result.user)
+  results = undefined;
 
   @AfterLoad()
   loadTempPassword() {

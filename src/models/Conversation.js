@@ -1,6 +1,15 @@
-import { BaseEntity, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Entity, JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import Teacher from './Teacher';
+import User from './User';
+import Message from './Message';
 
 
 @Entity()
@@ -14,4 +23,7 @@ export default class Conversation extends BaseEntity {
   @OneToMany(type => Message, message => message.conversation)
   messages = undefined;
 
+  @ManyToMany(type => User, user => user.conversations)
+  @JoinTable()
+  users = undefined;
 }
