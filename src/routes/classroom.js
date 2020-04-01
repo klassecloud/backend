@@ -28,15 +28,15 @@ classroomRouter.post('/', async (ctx, next) => {
 classroomRouter.post('/join', async (ctx, next) => {
   const {body} = ctx.request;
   if (body.user.id === undefined || body.classroom.id === undefined) {
-    return ctx.throw(Boom.badRequest('You need to define an userId and a classroomId'));
+    return ctx.throw(Boom.badRequest('You need to define a userId and a classromId'));
   }
   const classroom = await Classroom.findOne({id: body.classroom.id}, {relations:  ['users']});
   if (classroom === false) {
-    return ctx.throw(Boom.badRequest('The classroom you want to join doesnt exist'));
+    return ctx.throw(Boom.badRequest('The classroom you want to join is not existing'));
   }
   const user = await User.findOne({id: body.user.id}, {relations: ['classrooms']});
   if (user === false) {
-    return ctx.throw(Boom.badRequest('The given userId doesnt exist'));
+    return ctx.throw(Boom.badRequest('The given userid is not existing'));
   }
   console.log(classroom);
   classroom.users.push(user);
@@ -47,11 +47,11 @@ classroomRouter.post('/join', async (ctx, next) => {
 
 classroomRouter.get('/get/byUserId', async (ctx, next) => {
   if (ctx.user.id === undefined) {
-    return ctx.throw(Boom.badRequest('You need to define an userId'));
+    return ctx.throw(Boom.badRequest('You need to define a userId'));
   }
   const user = await User.findOne({id: ctx.user.id}, {relations: ['classrooms']});
-  if (user === undefined){
-    return ctx.throw(Boom.badRequest('The given userId doesnt existing'));
+  if (user === undefined) {
+    return ctx.throw(Boom.badRequest('The given userid is not existing'));
   }
   ctx.status = 200;
   ctx.body = user.classrooms;
