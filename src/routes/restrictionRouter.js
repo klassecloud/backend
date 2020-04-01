@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import classroomRouter from './classroom';
 import config from '../config';
 
-const restrictionRouter = new Router({prefix: '/restricted'});
+const restrictionRouter = new Router({prefix: '/api'});
 
 restrictionRouter.use(async (ctx, next) => {
   if (ctx.headers.authorization) {

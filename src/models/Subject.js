@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Classroom from './Classroom';
 import Conversation from './Conversation';
 import Task from './Task';
+import Teacher from './Teacher';
 
 @Entity()
 export default class Subject extends BaseEntity{
@@ -23,6 +24,9 @@ export default class Subject extends BaseEntity{
   @Column('varchar')
   classroomId = undefined;
 
+  @Column('varchar')
+  teacherId = undefined;
+
   @Column({
     type: 'varchar',
     nullable: true
@@ -32,6 +36,10 @@ export default class Subject extends BaseEntity{
   @ManyToOne(type => Classroom, classroom => classroom.subjects)
   @JoinColumn({name: 'classroomId'})
   classroom = undefined;
+
+  @ManyToOne(type => Teacher, teacher => teacher.subjects)
+  @JoinColumn({name: 'teacherId'})
+  teacher = undefined;
 
   @OneToOne(type => Conversation)
   @JoinColumn()

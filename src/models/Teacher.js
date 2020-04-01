@@ -13,6 +13,7 @@ import Classroom from './Classroom';
 import bcrypt from 'bcryptjs';
 import School from './School';
 import Conversation from './Conversation';
+import Subject from './Subject';
 
 
 @Entity()
@@ -32,11 +33,11 @@ export default class Teacher extends BaseEntity{
   password = undefined;
 
   @Column('varchar')
-  @Unique
+  @Unique()
   email = undefined;
 
   @Column('boolean')
-  isValidated = undefined
+  isValidated = undefined;
 
   @ManyToMany(type => School, school => school.teachers)
   @JoinTable()
@@ -47,6 +48,9 @@ export default class Teacher extends BaseEntity{
 
   @OneToMany(type => Conversation, conversation => conversation.teacher)
   conversations = undefined;
+
+  @OneToMany(type => Subject, subject => subject.teacher)
+  subjects = undefined;
 
 
   @AfterLoad()
