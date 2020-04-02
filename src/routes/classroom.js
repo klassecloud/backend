@@ -26,6 +26,17 @@ classroomRouter.post('/', async (ctx, next) => {
   return next();
 });
 
+classroomRouter.post('/:classroomId/subject', async (ctx, next) => {
+  const teacher = await Teacher.findOne({ id: ctx.user.id });
+  if ( teacher === undefined || !teacher.isValidated ) {
+    return ctx.throw(Boom.unauthorized('You are not a teacher or not validated'));
+   }
+    const room = await Classroom.findOne({ id: ctx.params.classroomId}, { relations: ['subjects']});
+    console.log(room);
+  ctx.status = 200;
+  return next();
+});
+
 classroomRouter.post('/join', async (ctx, next) => {
   const { body } = ctx.request;
   if (ctx.user.id === undefined || body.classroom.id === undefined) {
