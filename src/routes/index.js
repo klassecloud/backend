@@ -48,4 +48,5 @@ router.use(async (ctx, next) => {
 router.use(authRouter.routes());
 router.use(restrictionRouter.routes());
 
+
 export default router;

@@ -16,6 +16,7 @@ const config = {
     host: env.DB_HOST,
     port: env.DB_PORT,
     database: env.DB_DATABASE,
+    cache: true,
     logging: false,
   },
   jwtSecret: env.JWT_SECRET,

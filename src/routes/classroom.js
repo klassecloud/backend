@@ -3,6 +3,8 @@ import Boom from '@hapi/boom';
 import Classroom from '../models/Classroom';
 import User from '../models/User';
 import Teacher from '../models/Teacher';
+import Subject from '../models/Subject';
+import Conversation from '../models/Conversation';
 
 
 const classroomRouter = new Router({ prefix: '/classroom' });
@@ -27,12 +29,21 @@ classroomRouter.post('/', async (ctx, next) => {
 });
 
 classroomRouter.post('/:classroomId/subject', async (ctx, next) => {
+  const { body } = ctx.request;
   const teacher = await Teacher.findOne({ id: ctx.user.id });
-  if ( teacher === undefined || !teacher.isValidated ) {
+  if (teacher === undefined || !teacher.isValidated) {
     return ctx.throw(Boom.unauthorized('You are not a teacher or not validated'));
-   }
-    const room = await Classroom.findOne({ id: ctx.params.classroomId}, { relations: ['subjects']});
-    console.log(room);
+  }
+  const room = await Classroom.findOne({ id: ctx.params.classroomId }, { relations: ['subjects'] });
+  const subjectTeacher = await Teacher.findOne({ id: body.teacherId });
+  const subject = new Subject();
+  const conversation = new Conversation();
+  subject.name = body.subject.name;
+  subject.teacher = subjectTeacher;
+  subject.description = body.subject.description;
+  subject.conversation = conversation;
+  room.subjects.push(subject);
+  await room.save();
   ctx.status = 200;
   return next();
 });
@@ -60,7 +71,7 @@ classroomRouter.get('/get/byUserId', async (ctx, next) => {
   if (ctx.user.id === undefined) {
     return ctx.throw(Boom.badRequest('You need to define a userId'));
   }
-  const user = await User.findOne({ id: ctx.user.id }, { relations: ['classroom', 'classroom.teacher', 'classroom.subjects'] });
+  const user = await User.findOne({ id: ctx.user.id }, { relations: ['classroom', 'classroom.teacher', 'classroom.subjects', 'classroom.subjects.conversation', 'classroom.subjects.teacher'] });
   if (user === undefined) {
     return ctx.throw(Boom.badRequest('The given userid is not existing'));
   }

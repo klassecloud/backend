@@ -44,6 +44,6 @@ export default class Classroom extends BaseEntity {
   )
   pushPublicKey = undefined;
 
-  @OneToMany(type => Subject, subject => subject.classroom)
+  @OneToMany(type => Subject, subject => subject.classroom, { cascade: true })
   subjects = undefined;
 }

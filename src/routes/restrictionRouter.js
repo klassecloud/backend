@@ -3,6 +3,7 @@ import Boom from '@hapi/boom';
 import * as jwt from 'jsonwebtoken';
 import classroomRouter from './classroom';
 import config from '../config';
+import userRouter from './user';
 
 const restrictionRouter = new Router({prefix: '/api'});
 
@@ -28,5 +29,6 @@ restrictionRouter.use(async (ctx, next) => {
 });
 
 restrictionRouter.use(classroomRouter.routes());
+restrictionRouter.use(userRouter.routes());
 
 export default restrictionRouter;

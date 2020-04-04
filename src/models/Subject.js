@@ -41,7 +41,7 @@ export default class Subject extends BaseEntity{
   @JoinColumn({name: 'teacherId'})
   teacher = undefined;
 
-  @OneToOne(type => Conversation)
+  @OneToOne(type => Conversation, {cascade: true})
   @JoinColumn()
   conversation = undefined;
 

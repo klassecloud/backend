@@ -45,7 +45,7 @@ if (!module.parent) {
     try {
       await Promise.all([
         typeorm(),
-        app.listen(3000),
+        app.listen(3001),
       ]);
       if (process.send) process.send('ready');
       const { port } = app.server.address();
