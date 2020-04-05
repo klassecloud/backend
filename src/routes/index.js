@@ -7,6 +7,7 @@ import * as jwt from 'jsonwebtoken';
 import authRouter from './auth';
 import classroomRouter from './classroom';
 import config from '../config';
+import restrictionRouter from './restrictionRouter';
 
 const router = new Router({ prefix: '/v1' });
 
@@ -45,6 +46,7 @@ router.use(async (ctx, next) => {
 });
 
 router.use(authRouter.routes());
-router.use(classroomRouter.routes());
+router.use(restrictionRouter.routes());
+
 
 export default router;

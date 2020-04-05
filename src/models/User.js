@@ -6,11 +6,13 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany, JoinTable,
+  ManyToMany, JoinTable, Unique, ManyToOne, OneToMany, JoinColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 import Classroom from './Classroom';
+import Conversation from './Conversation';
+import Result from './Result';
 // const bcrypt = require('bcryptjs');
 
 
@@ -20,22 +22,30 @@ export default class User extends BaseEntity {
   id = uuidv4();
 
   @Column('varchar')
+  @Unique()
   username = undefined;
 
   @Column('varchar')
   nickname = undefined;
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  email = undefined;
-
   @Column('varchar')
   password = undefined;
 
-  @ManyToMany(type => Classroom, classroom => classroom.users)
-  classrooms = undefined;
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  classroomId = undefined;
+
+  @ManyToOne(type => Classroom, classroom => classroom.users)
+  @JoinColumn({name: 'classroomId'})
+  classroom = undefined;
+
+  @ManyToMany(type => Conversation, conversation => conversation.users)
+  conversations = undefined;
+
+  @OneToMany(type => Result, result => result.user)
+  results = undefined;
 
   @AfterLoad()
   loadTempPassword() {
