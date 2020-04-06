@@ -1,16 +1,15 @@
 import Router from '@koa/router';
 import Boom from '@hapi/boom';
 import User from '../models/User';
-import UserService from '../service/UserService';
+import UserService from '../service/userService';
 
 const userRouter = new Router({prefix: '/user'});
+const userService = new UserService();
 
 userRouter.use();
 
 userRouter.get('/:userId/classroom', async (ctx, next) => {
-  const service = new UserService();
-  return service.getUserClassroom(ctx);
-//  return next(ctx);
+  return userService.getUserClassroom(ctx);
 });
 
 userRouter.get('/:userId/classroom/:classroomId/subject/:subjectId', async (ctx, next) => {

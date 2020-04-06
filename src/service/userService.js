@@ -1,7 +1,8 @@
 import Boom from '@hapi/boom';
 import User from '../models/User';
 
-export default class UserService {
+export default class userService {
+
   async getUserClassroom(ctx) {
     if (ctx.user.id === undefined) {
       return ctx.throw(Boom.unauthorized());
