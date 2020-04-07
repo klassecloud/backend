@@ -14,14 +14,15 @@ export default class userService {
       return ctx.throw(Boom.badRequest('The given userid is not existing'));
     }
 
-    let output = new UserClassroom();
+    const output = new UserClassroom();
+    output.userClassroomId = user.classroom.id;
     output.classroomName = user.classroom.topic;
     output.classroomPushKey = user.classroom.pushPublicKey;
     output.classroomTeacherName = user.classroom.teacher.nickname;
     output.classroomSubjects = new Array();
 
-    user.classroom.subjects.array.forEach(subject => {
-      let userSubject = new UserSubject();
+    user.classroom.subjects.forEach(subject => {
+      const userSubject = new UserSubject();
       userSubject.subjectId = subject.id;
       userSubject.subjectName = subject.name;
       userSubject.subjectTeacherName = subject.teacher.nickname;
