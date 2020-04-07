@@ -3,7 +3,7 @@ import User from '../models/User';
 
 export default class userService {
 
-  async getUserClassroom(ctx) {
+  async getUserClassroom(ctx, next) {
     if (ctx.user.id === undefined) {
       return ctx.throw(Boom.unauthorized());
     }
@@ -18,6 +18,6 @@ export default class userService {
       pushPubKey: user.classroom.pushPublicKey,
       classroomSubjects: user.classroom.subjects,
     };
-    return ctx;
+    return next();
   }
 }

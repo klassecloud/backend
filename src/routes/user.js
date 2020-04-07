@@ -9,7 +9,7 @@ const userService = new UserService();
 userRouter.use();
 
 userRouter.get('/:userId/classroom', async (ctx, next) => {
-  return userService.getUserClassroom(ctx);
+  return userService.getUserClassroom(ctx, next);
 });
 
 userRouter.get('/:userId/classroom/:classroomId/subject/:subjectId', async (ctx, next) => {

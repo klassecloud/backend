@@ -67,7 +67,4 @@ classroomRouter.post('/join', async (ctx, next) => {
   return next();
 });
 
-
-
-
 export default classroomRouter;
