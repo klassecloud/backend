@@ -37,9 +37,7 @@ userRouter.post('/:userId/classroom/:classroomId/subject/:subjectId/task/:taskId
 });
 
 userRouter.put('/:userId/classroom/:classroomId/subject/:subjectId/task/:taskId/result', async (ctx, next) => {
-  const { body } = ctx.request;
-
-  return next();
+  return userService.updateUser(ctx, next);
 });
 
 export default userRouter;

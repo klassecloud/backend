@@ -4,7 +4,6 @@ import UserClassroom from '../models/view/userClassroom';
 import UserSubject from '../models/view/userSubject';
 
 export default class UserService {
-
   async getUserClassroom(ctx, next) {
     if (ctx.user.id === undefined) {
       return ctx.throw(Boom.unauthorized());
@@ -21,18 +20,29 @@ export default class UserService {
     output.classroomTeacherName = user.classroom.teacher.nickname;
     output.classroomSubjects = new Array();
 
-    user.classroom.subjects.forEach(subject => {
+    user.classroom.subjects.forEach((subject) => {
       const userSubject = new UserSubject();
       userSubject.subjectId = subject.id;
       userSubject.subjectName = subject.name;
       userSubject.subjectTeacherName = subject.teacher.nickname;
       userSubject.subjectDescription = subject.description;
-
       output.classroomSubjects.push(userSubject);
     });
 
     ctx.status = 200;
     ctx.body = output;
+    return next();
+  }
+
+  async updateUser(ctx, next) {
+    const { body } = ctx.request;
+    const user = await User.findOne( { id: ctx.user.id });
+
+    user.nickname = body.nickname;
+    user.username = body.username;
+    user.password = body.password;
+    await user.save();
+    ctx.status = 200;
     return next();
   }
 }
