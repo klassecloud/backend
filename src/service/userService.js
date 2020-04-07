@@ -3,7 +3,7 @@ import User from '../models/User';
 import UserClassroom from '../models/view/userClassroom';
 import UserSubject from '../models/view/userSubject';
 
-export default class userService {
+export default class UserService {
 
   async getUserClassroom(ctx, next) {
     if (ctx.user.id === undefined) {
