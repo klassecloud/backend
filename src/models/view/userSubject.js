@@ -3,5 +3,4 @@ export default class UserSubject {
   subjectName = undefined;
   subjectTeacherName = undefined;
   subjectDescription = undefined;
-
 }
