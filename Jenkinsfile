@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    node {
-      label 'nodeagent'
-    }
-
-  }
+  agent any
   stages {
     stage('fetchGit') {
       steps {
@@ -13,6 +8,7 @@ pipeline {
     }
 
     stage('build') {
+      agent any
       steps {
         sh 'npm install'
         sh 'npm build'
