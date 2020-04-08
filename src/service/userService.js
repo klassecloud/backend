@@ -1,8 +1,9 @@
 import Boom from '@hapi/boom';
 import User from '../models/User';
+import UserClassroom from '../models/view/userClassroom';
+import UserSubject from '../models/view/userSubject';
 
-export default class userService {
-
+export default class UserService {
   async getUserClassroom(ctx, next) {
     if (ctx.user.id === undefined) {
       return ctx.throw(Boom.unauthorized());
@@ -11,13 +12,37 @@ export default class userService {
     if (user === undefined) {
       return ctx.throw(Boom.badRequest('The given userid is not existing'));
     }
+
+    const output = new UserClassroom();
+    output.userClassroomId = user.classroom.id;
+    output.classroomName = user.classroom.topic;
+    output.classroomPushKey = user.classroom.pushPublicKey;
+    output.classroomTeacherName = user.classroom.teacher.nickname;
+    output.classroomSubjects = new Array();
+
+    user.classroom.subjects.forEach((subject) => {
+      const userSubject = new UserSubject();
+      userSubject.subjectId = subject.id;
+      userSubject.subjectName = subject.name;
+      userSubject.subjectTeacherName = subject.teacher.nickname;
+      userSubject.subjectDescription = subject.description;
+      output.classroomSubjects.push(userSubject);
+    });
+
     ctx.status = 200;
-    ctx.body = {
-      classroomName: user.classroom.topic,
-      classroomTeacherName: user.classroom.teacher.nickname,
-      pushPubKey: user.classroom.pushPublicKey,
-      classroomSubjects: user.classroom.subjects,
-    };
+    ctx.body = output;
+    return next();
+  }
+
+  async updateUser(ctx, next) {
+    const { body } = ctx.request;
+    const user = await User.findOne({ id: ctx.user.id });
+
+    user.nickname = body.nickname;
+    user.username = body.username;
+    user.password = body.password;
+    await user.save();
+    ctx.status = 200;
     return next();
   }
 }

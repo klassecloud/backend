@@ -45,7 +45,7 @@ export default class Subject extends BaseEntity{
   @JoinColumn()
   conversation = undefined;
 
-  @OneToMany(type => Task, task => task.subject)
+  @OneToMany(type => Task, task => task.subject, {cascade: true})
   tasks = undefined;
 
 }
