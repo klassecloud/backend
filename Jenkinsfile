@@ -9,6 +9,9 @@ pipeline {
 
     stage('build') {
       agent any
+      environment {
+        nodejs = 'npm'
+      }
       steps {
         sh 'npm install'
         sh 'npm build'
