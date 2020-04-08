@@ -36,7 +36,7 @@ export default class UserService {
 
   async updateUser(ctx, next) {
     const { body } = ctx.request;
-    const user = await User.findOne( { id: ctx.user.id });
+    const user = await User.findOne({ id: ctx.user.id });
 
     user.nickname = body.nickname;
     user.username = body.username;

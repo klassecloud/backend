@@ -1,10 +1,4 @@
 import Router from '@koa/router';
-import Boom from '@hapi/boom';
-import bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-import User from '../models/User';
-import config from '../config';
-import Teacher from '../models/Teacher';
 import AuthService from '../service/authService';
 
 const authRouter = new Router({ prefix: '/auth' });

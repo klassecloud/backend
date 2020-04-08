@@ -41,7 +41,7 @@ export default class Task extends BaseEntity{
   @Column('varchar')
   subjectId = undefined;
 
-  @ManyToMany(type => File, file => file.tasks)
+  @ManyToMany(type => File, file => file.tasks, {cascade: true})
   @JoinTable()
   files = undefined;
 
