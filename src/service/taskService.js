@@ -44,7 +44,7 @@ export default class TaskService {
     if (!ctx.user.isValidated) {
       return ctx.throw(Boom.unauthorized('You are not a teacher or not validated'));
     }
-    const task = await Task.findOne({ id: body.subjectId }, {  relations: ['files'] });
+    const task = await Task.findOne({ id: body.taskId }, {  relations: ['files'] });
     if (task === undefined) {
       return ctx.throw(Boom.notFound('The given subject is not existing'));
     }
