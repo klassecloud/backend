@@ -38,4 +38,10 @@ export default class TaskService {
     ctx.status = 201;
     return next();
   }
+
+  async getSubjectTasks(ctx, next) {
+    const subject = await Subject.findOne({id: ctx.params.subjectId}, {relations: ['tasks', 'tasks.files']});
+    ctx.body = subject;
+    return next();
+  }
 }
